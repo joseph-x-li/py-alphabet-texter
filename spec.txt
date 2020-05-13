@@ -1,0 +1,13 @@
+continuous input using tkinter callbacks
+
+timing control 
+
+GUI with letter coloring
+
+reset function
+
+hash/save replay function
+
+graphing
+
+multimode (forward, backward, spaces, random??)
