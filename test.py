@@ -9,10 +9,19 @@ graph = Canvas(master, width=200, height=100, background = "blue")
 graph.create_text(50, 10, text = "Hello World")
 graph.grid(row=1)
 
-holder = StringVar()
 
-textEntry = Entry(master, textvariable = holder)
+def on_keystroke(*args):
+    print(input_var.get())
+    return
+
+input_var = StringVar()
+input_var.trace("w", on_keystroke)
+
+textEntry = Entry(master, textvariable = input_var)
 textEntry.grid(row=2)
+
+about_me = Label(master, text = "Joseph Li, 2020", font = "Menlo")
+about_me.grid(row = 4)
 
 master.mainloop()
 
