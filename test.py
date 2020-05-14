@@ -9,6 +9,10 @@ graph = Canvas(master, width=200, height=100, background = "blue")
 graph.create_text(50, 10, text = "Hello World")
 graph.grid(row=1)
 
+holder = StringVar()
+
+textEntry = Entry(master, textvariable = holder)
+textEntry.grid(row=2)
 
 master.mainloop()
 
