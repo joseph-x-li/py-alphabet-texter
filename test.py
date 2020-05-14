@@ -1,25 +1,16 @@
 from tkinter import *
-from tkmacosx import Button
 
-root = Tk()
+master = Tk()
 
-title = Label(root, text="Welcome to Alphabet Texter Python Edition :)")
-title.pack()
+title = Label(master, text="Welcome to Alphabet Texter, Python Edition", font = "Menlo")
+title.grid(row=0)
 
-aboutFrame = Frame(root, bg="pink")
-aboutFrame.pack(side=BOTTOM)
+graph = Canvas(master, width=200, height=100, background = "blue")
+graph.create_text(50, 10, text = "Hello World")
+graph.grid(row=1)
 
-button1 = Button(aboutFrame, text="my linkedin1", fg="red")
-button2 = Button(aboutFrame, text="my linkedin2", fg="blue")
-button3 = Button(aboutFrame, text="my linkedin3", fg="green")
-button4 = Button(aboutFrame, text="my linkedin4", fg="yellow") 
 
-button1.pack(side=LEFT)
-button2.pack(side=LEFT)
-button3.pack(side=LEFT)
-button4.pack(side=RIGHT)
-
-root.mainloop()
+master.mainloop()
 
 print("Program Finished")
 
