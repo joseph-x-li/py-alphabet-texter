@@ -1,41 +1,81 @@
 from tkinter import *
 import alphabet_utils
+import matplotlib
+matplotlib.use('TkAgg')
 
-master = Tk()
+root = Tk()
+root.title("py-alphabet-texter")
+# ---------- VARS ----------
 au = alphabet_utils.AlphabetUtils()
+letter_states = [False for _ in range(26)]
+time_array = [-1 for _ in range(25)]
+running = False
+best_time = None # float
+prev_time = None # float
 
-title = Label(master, text="Welcome to Alphabet Texter, Python Edition", font="Menlo")
+# ---------- ROW 0 ---------- title
+title = Label(root, text="Welcome to Alphabet Texter, Python Edition", font="Menlo")
 title.grid(row=0)
 
-graph = Canvas(master, width=200, height=100, background="blue")
-graph.create_text(50, 10, text = "Hello World")
+
+# ---------- ROW 1 ---------- matplotlib stuffs
+graph = Canvas(root, width=200, height=100, background="blue")
+graph.create_text(50, 10, text="Hello World", font="Menlo")
 graph.grid(row=1)
 
-title = Label(master, text="abcdefghijklmnopqrstuvwxyz", font="Menlo", fg="green")
-title.grid(row=2)
 
+# ---------- ROW 2 ---------- to be a canvas
+title = Label(root, text="abcdefghijklmnopqrstuvwxyz", font="Menlo", fg="gray")
+title.grid(row=2, column = 0)
+
+
+# ---------- ROW 3 ---------- 
 def on_keystroke(*args):
-    print(au.tell(input_var.get()))
-    print(input_var.get())
+    global running, prev_time, best_time
+    running = True
+    x = au.tell(input_var.get())
+    print(x)
+    correct, letter_states, time_array = x
+    if correct:
+        running = False
+        prev_time = sum(time_array)
+        best_time = prev_time if best_time is None else min(prev_time, best_time)
     return
 
 input_var = StringVar()
 input_var.trace("w", on_keystroke)
 
-textEntry = Entry(master, textvariable = input_var, font="Menlo", width=26)
+textEntry = Entry(root, textvariable = input_var, font="Menlo", width=26)
 textEntry.grid(row=3)
 
-button1 = Button(master, text="button1")
+
+# ---------- ROW 4 ----------
+def onReset():
+    running = False
+    au.reset()
+    textEntry.delete(0, "end")
+    
+button1 = Button(root, text="Reset", font="Menlo", command=onReset)
 button1.grid(row=4)
 
-about_me = Label(master, text="Joseph X Li, 2020", font="Menlo")
+previous_time_label = Label(root, text=f"Previous Time: {'--:--' if best_time is None else 'fill'}", font="Menlo")
+previous_time_label.grid(row=4, column = 1)
+
+best_time_label = Label(root, text=f"Best Time: {'--:--' if best_time is None else 'fill'}", font="Menlo")
+best_time_label.grid(row=4, column = 2)
+
+
+# ---------- ROW 5 ----------
+about_me = Label(root, text="Joseph X Li, 2020", font="Menlo")
 about_me.grid(row=5)
 
-master.mainloop()
+def _quit():
+    root.quit()   
+    root.destroy() 
+
+root.mainloop()
 
 print("Program Finished")
-
-
 
 
 # def on_variable_trace(*args):

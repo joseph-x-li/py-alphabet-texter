@@ -51,4 +51,11 @@ class AlphabetUtils:
         
     def set_KEY(self, new_key):
         self.KEY = new_key
+        self.KEYLEN = len(self.KEY)
+        return
+    
+    def reset(self):
+        self.prev = ""
+        self.now = ""
+        self.times = [-1 for _ in range(self.KEYLEN)]
         return
