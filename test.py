@@ -1,27 +1,33 @@
 from tkinter import *
+import alphabet_utils
 
 master = Tk()
+au = alphabet_utils.AlphabetUtils()
 
-title = Label(master, text="Welcome to Alphabet Texter, Python Edition", font = "Menlo")
+title = Label(master, text="Welcome to Alphabet Texter, Python Edition", font="Menlo")
 title.grid(row=0)
 
-graph = Canvas(master, width=200, height=100, background = "blue")
+graph = Canvas(master, width=200, height=100, background="blue")
 graph.create_text(50, 10, text = "Hello World")
 graph.grid(row=1)
 
 
 def on_keystroke(*args):
+    print(au.tell(input_var.get()))
     print(input_var.get())
     return
 
 input_var = StringVar()
 input_var.trace("w", on_keystroke)
 
-textEntry = Entry(master, textvariable = input_var)
+textEntry = Entry(master, textvariable = input_var, font="Menlo", width=26)
 textEntry.grid(row=2)
 
-about_me = Label(master, text = "Joseph Li, 2020", font = "Menlo")
-about_me.grid(row = 4)
+button1 = Button(master, text="button1")
+button1.grid(row=3)
+
+about_me = Label(master, text="Joseph X Li, 2020", font="Menlo")
+about_me.grid(row=4)
 
 master.mainloop()
 
