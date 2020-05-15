@@ -1,11 +1,12 @@
 import time
 
 class AlphabetUtils:
-    def __init__(self):
-        self.times = [-1 for _ in range(26)]
+    def __init__(self, KEY = "abcdefghijklmnopqrstuvwxyz"):
+        self.KEY = KEY
+        self.KEYLEN = len(self.KEY)
         self.prev = ""
         self.now = ""
-        self.KEY = "abcdefghijklmnopqrstuvwxyz"
+        self.times = [-1 for _ in range(self.KEYLEN)]
         
     def __repr__(self):
         base = ""
@@ -15,7 +16,7 @@ class AlphabetUtils:
         return base
         
     def _calculate_times(self):
-        for i in range(26):
+        for i in range(self.KEYLEN):
             if i >= len(self.now):
                 self.times[i] = -1
             elif i >= len(self.prev):
@@ -31,14 +32,14 @@ class AlphabetUtils:
         return
     
     def _get_correct_chars(self):
-        base = [False for _ in range(26)]
-        for i in range(min(len(self.now), 26)):
+        base = [False for _ in range(self.KEYLEN)]
+        for i in range(min(len(self.now), self.KEYLEN)):
             if self.now[i] == self.KEY[i]:
                 base[i] = True
         return base
             
     def _get_time_diffs(self):
-        return [(y - x) for (x, y) in zip(self.times[:25], self.times[1:])]
+        return [(y - x) for (x, y) in zip(self.times[:(self.KEYLEN - 1)], self.times[1:])]
     
     def tell(self, current_input):
         self.prev = self.now
@@ -47,3 +48,7 @@ class AlphabetUtils:
         return (current_input == self.KEY, 
                 self._get_correct_chars(),
                 self._get_time_diffs())
+        
+    def set_KEY(self, new_key):
+        self.KEY = new_key
+        return
