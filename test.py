@@ -6,6 +6,9 @@ matplotlib.use('TkAgg')
 
 root = Tk()
 root.title("py-alphabet-texter")
+root.grid_rowconfigure(1, weight=1)
+root.grid_columnconfigure(0, weight=1)
+
 # ---------- VARS ----------
 au = alphabet_utils.AlphabetUtils()
 letter_states = [False for _ in range(26)]
@@ -30,12 +33,6 @@ alphabet_display = Text(width=51, height=1)
 alphabet_display.insert("end", "a b c d e f g h i j k l m n o p q r s t u v w x y z")
 alphabet_display.configure(state="disabled")
 
-# red_font = Font(family="Menlo", color="red", size=9)
-# gray_font = Font(family="Menlo", color="gray", size=9)
-# green_font = Font(family="Menlo", color="green", size=9)
-# alphabet_display.tag_configure("RED", red_font)
-# alphabet_display.tag_configure("GRAY", gray_font)
-# alphabet_display.tag_configure("GREEN", green_font)
 alphabet_display.grid(row=2)
 
 
@@ -48,7 +45,10 @@ def on_keystroke(*args):
     if correct:
         running = False
         prev_time = sum(time_array)
+        print(prev_time)
         best_time = prev_time if best_time is None else min(prev_time, best_time)
+        previous_time_label.config(text=f"Previous Time: {'-' if prev_time is None else f'{prev_time:.3f}'}")
+        best_time_label.config(text=f"Best Time: {'-' if best_time is None else f'{best_time:.3f}'}")
     return
 
 input_var = StringVar()
@@ -59,19 +59,25 @@ textEntry.grid(row=3)
 
 
 # ---------- ROW 4 ----------
+util_frame = Frame(root)
+util_frame.grid(row=4, sticky="ew")
+
 def onReset():
     running = False
     au.reset()
     textEntry.delete(0, "end")
-    
-button1 = Button(root, text="Reset", font="Menlo", command=onReset)
-button1.grid(row=4)
 
-previous_time_label = Label(root, text=f"Previous Time: {'-' if best_time is None else 'fill'}", font="Menlo")
-previous_time_label.grid(row=4, column = 1)
+print(best_time)
 
-best_time_label = Label(root, text=f"Best Time: {'-' if best_time is None else 'fill'}", font="Menlo")
-best_time_label.grid(row=4, column = 2)
+previous_time_label = Label(util_frame, text=f"Previous Time: {'-' if prev_time is None else f'{prev_time:.3f}'}", font="Menlo")
+previous_time_label.grid(row=0, column=0, sticky="w")
+
+best_time_label = Label(util_frame, text=f"Best Time: {'-' if best_time is None else f'{best_time:.3f}'}", font="Menlo")
+best_time_label.grid(row=0, column=1, sticky="w")
+
+button1 = Button(util_frame, text="Reset", font="Menlo", command=onReset)
+button1.grid(row=0, column=2, sticky="e")
+util_frame.grid_columnconfigure(2, weight=1)
 
 
 # ---------- ROW 5 ----------
@@ -85,16 +91,3 @@ def _quit():
 root.mainloop()
 
 print("Program Finished")
-
-
-# def on_variable_trace(*args):
-#     if entryVariable2.get() == "":
-#         entryWidget3.configure(state="disable")
-#     else:
-#         entryWidget3.configure(state="normal")
-
-# entryVariable2 = StringVar()
-# entryWidget2= Entry(textFrame, textvariable=entryVariable2)
-# entryWidget2["width"] = 30
-# entryWidget2.pack(side="top")
-# entryVariable2.trace("w", on_variable_trace)
