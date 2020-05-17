@@ -1,13 +1,13 @@
 continuous input using tkinter callbacks    DONE
 
-timing control    DONE
+timing control  DONE
 
-GUI with letter coloring
+GUI with letter coloring   
 
 graphing
 
-reset function
+reset function    DONE
 
 hash/save replay function
 
-multimode?? (forward, backward, spaces, random)
+multimode?? (forward, backward, spaces, random) (not doing)
