@@ -11,6 +11,7 @@ class AlphabetTexter:
         self.best_time = None
         self.prev_time = None
         self.running = False
+        self.prev_input = ""
         self.letter_states = [False for _ in range(26)]
         self.time_array = [-1 for _ in range(25)]
         self.au = alphabet_utils.AlphabetUtils()
@@ -27,6 +28,9 @@ class AlphabetTexter:
         self.alphabet_display = Text(width=51, height=1)
         self.alphabet_display.insert("end", "a b c d e f g h i j k l m n o p q r s t u v w x y z")
         self.alphabet_display.configure(state="disabled")
+        self.alphabet_display.tag_configure("red", foreground="red")
+        self.alphabet_display.tag_configure("black", foreground="black")
+        self.alphabet_display.tag_configure("green", foreground="green")
         self.alphabet_display.grid(row=2)
 
         self.input_var = StringVar()
@@ -38,13 +42,17 @@ class AlphabetTexter:
         self.util_frame = Frame(parent_frame)
         self.util_frame.grid(row=4, sticky="ew")
 
-        self.previous_time_label = Label(self.util_frame, text=f"Previous Time: {'-' if self.prev_time is None else f'{self.prev_time:.3f}'}", font="Menlo")
+        self.previous_time_label = Label(self.util_frame, 
+                                         text=f"Previous Time: {'-' if self.prev_time is None else f'{self.prev_time:.3f}'}", 
+                                         font="Menlo")
         self.previous_time_label.grid(row=0, column=0, sticky="w")
 
-        self.best_time_label = Label(self.util_frame, text=f"Best Time: {'-' if self.best_time is None else f'{self.best_time:.3f}'}", font="Menlo")
+        self.best_time_label = Label(self.util_frame, 
+                                     text=f"Best Time: {'-' if self.best_time is None else f'{self.best_time:.3f}'}", 
+                                     font="Menlo")
         self.best_time_label.grid(row=0, column=1, sticky="w")
 
-        self.reset_button = Button(self.util_frame, text="Reset", font="Menlo", command=self.onReset)
+        self.reset_button = Button(self.util_frame, text="Reset", font="Menlo", command=self.on_reset)
         self.reset_button.grid(row=0, column=2, sticky="e")
         self.util_frame.grid_columnconfigure(2, weight=1)
 
@@ -52,22 +60,47 @@ class AlphabetTexter:
         self.about_me.grid(row=5)
     
     def on_keystroke(self, *args):
-        self.running = True
-        correct, self.letter_states, self.time_array = self.au.tell(self.input_var.get())
+        if self.prev_input == "" or self.running:
+            self.prev_input = self.input_var.get()
+            self.running = True
+        else:
+            self.prev_input = self.input_var.get()
+            return
+        
+        correct, letter_states, self.time_array = self.au.tell(self.input_var.get())
+        self.make_color(letter_states)
         self.time_array = [(t if t >= 0 else 0) for t in self.time_array]
         if correct:
             self.running = False
             self.prev_time = sum(self.time_array)
-            print(self.prev_time)
             self.best_time = self.prev_time if self.best_time is None else min(self.prev_time, self.best_time)
-            self.previous_time_label.config(text=f"Previous Time: {'-' if self.prev_time is None else f'{self.prev_time:.3f}'}")
-            self.best_time_label.config(text=f"Best Time: {'-' if self.best_time is None else f'{self.best_time:.3f}'}")
+            self.previous_time_label.config(text=f"Previous Time: {self.prev_time:.3f}")
+            self.best_time_label.config(text=f"Best Time: {self.best_time:.3f}")
         return
     
-    def onReset(self):
-            self.running = False
-            self.au.reset()
-            self.textEntry.delete(0, "end")
+    def on_reset(self):
+        self.running = False
+        self.au.reset()
+        self.textEntry.delete(0, "end")
+        self.make_color(None, reset=True)
+    
+    def make_color(self, colors, reset=False):
+        for col in ["red", "green", "black"]:
+            self.alphabet_display.tag_remove(col, "1.0", "1.51")
+            
+        for x in range(26):
+            start = x*2
+            end = start + 1
+            start = f"1.{start}"
+            end = f"1.{end}"
+            if reset or x >= len(self.input_var.get()):
+                color = "black"
+            elif colors[x]:
+                color = "green"
+            else: 
+                color = "red"
+            self.alphabet_display.tag_add(color, start, end)    
+        return
         
         
 def main():
@@ -81,5 +114,3 @@ if __name__ == "__main__":
 
 
 # root.title("py-alphabet-texter")
-# root.grid_rowconfigure(1, weight=1)
-# root.grid_columnconfigure(0, weight=1)
