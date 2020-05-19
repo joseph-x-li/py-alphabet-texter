@@ -2,7 +2,7 @@ continuous input using tkinter callbacks    DONE
 
 timing control  DONE
 
-GUI with letter coloring   
+GUI with letter coloring   DONE
 
 graphing
 

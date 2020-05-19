@@ -1,63 +1,68 @@
 from tkinter import *
 from tkinter.font import Font
 import alphabet_utils
-# import matplotlib
-# matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 class AlphabetTexter:
     def __init__(self, parent_frame):
-        root = Frame(parent_frame)
-        root.grid(row=0, column=0)
+        self.root = Frame(parent_frame, bg="red", highlightthickness=1, highlightbackground="black")
+        self.root.grid(row=0, column=0)
+        
+        self.MASTER_FONT = "Menlo"
         self.best_time = None
         self.prev_time = None
         self.running = False
         self.prev_input = ""
-        self.letter_states = [False for _ in range(26)]
-        self.time_array = [-1 for _ in range(25)]
         self.au = alphabet_utils.AlphabetUtils()
-        self.make_internals(root)
+        self.make_internals(self.root)
     
     def make_internals(self, parent_frame):
-        self.title = Label(parent_frame, text="Welcome to Alphabet Texter, Python Edition", font="Menlo")
-        self.title.grid(row=0)
+        self.title = Label(parent_frame, 
+                           text="Welcome to Alphabet Texter, Python Edition", 
+                           font=(self.MASTER_FONT, 16), 
+                           relief="ridge")
+        self.title.grid(row=0, column=0, sticky="news", ipady=5, ipadx=5)
 
         self.graph = Canvas(parent_frame, width=380, height=100, background="blue")
-        self.graph.create_text(50, 10, text="Hello World", font="Menlo")
-        self.graph.grid(row=1)
+        self.graph.create_text(50, 10, text="Hello World", font=self.MASTER_FONT)
+        self.graph.grid(row=1, column=0)
 
-        self.alphabet_display = Text(width=51, height=1)
+        self.alphabet_display = Text(parent_frame, width=51, height=1, font=self.MASTER_FONT, bg="green")
+        self.alphabet_display.grid(row=2, column=0, sticky="news", ipadx=5, ipady=5)
         self.alphabet_display.insert("end", "a b c d e f g h i j k l m n o p q r s t u v w x y z")
         self.alphabet_display.configure(state="disabled")
         self.alphabet_display.tag_configure("red", foreground="red")
         self.alphabet_display.tag_configure("black", foreground="black")
         self.alphabet_display.tag_configure("green", foreground="green")
-        self.alphabet_display.grid(row=2)
 
         self.input_var = StringVar()
         self.input_var.trace("w", self.on_keystroke)
         
-        self.textEntry = Entry(parent_frame, textvariable = self.input_var, font="Menlo", width=26)
-        self.textEntry.grid(row=3)
+        self.text_entry = Entry(parent_frame, textvariable = self.input_var, font=self.MASTER_FONT, width=26)
+        self.text_entry.grid(row=3)
+        self.text_entry.focus()
 
         self.util_frame = Frame(parent_frame)
         self.util_frame.grid(row=4, sticky="ew")
 
         self.previous_time_label = Label(self.util_frame, 
                                          text=f"Previous Time: {'-' if self.prev_time is None else f'{self.prev_time:.3f}'}", 
-                                         font="Menlo")
+                                         font=self.MASTER_FONT)
         self.previous_time_label.grid(row=0, column=0, sticky="w")
 
         self.best_time_label = Label(self.util_frame, 
                                      text=f"Best Time: {'-' if self.best_time is None else f'{self.best_time:.3f}'}", 
-                                     font="Menlo")
+                                     font=self.MASTER_FONT)
         self.best_time_label.grid(row=0, column=1, sticky="w")
 
-        self.reset_button = Button(self.util_frame, text="Reset", font="Menlo", command=self.on_reset)
+        self.reset_button = Button(self.util_frame, text="Reset", font=self.MASTER_FONT, command=self.on_reset)
         self.reset_button.grid(row=0, column=2, sticky="e")
         self.util_frame.grid_columnconfigure(2, weight=1)
 
-        self.about_me = Label(parent_frame, text="Joseph X Li, 2020", font="Menlo")
+        self.about_me = Label(parent_frame, text="Joseph X Li, 2020", font=self.MASTER_FONT)
         self.about_me.grid(row=5)
+        self.init_plot()
     
     def on_keystroke(self, *args):
         if self.prev_input == "" or self.running:
@@ -67,12 +72,13 @@ class AlphabetTexter:
             self.prev_input = self.input_var.get()
             return
         
-        correct, letter_states, self.time_array = self.au.tell(self.input_var.get())
+        correct, letter_states, time_array = self.au.tell(self.input_var.get())
         self.make_color(letter_states)
-        self.time_array = [(t if t >= 0 else 0) for t in self.time_array]
+        time_array = [(round(t, 5) if t >= 0 else 0.0) for t in time_array]
+        self.make_plot(time_array)
         if correct:
             self.running = False
-            self.prev_time = sum(self.time_array)
+            self.prev_time = sum(time_array)
             self.best_time = self.prev_time if self.best_time is None else min(self.prev_time, self.best_time)
             self.previous_time_label.config(text=f"Previous Time: {self.prev_time:.3f}")
             self.best_time_label.config(text=f"Best Time: {self.best_time:.3f}")
@@ -81,8 +87,9 @@ class AlphabetTexter:
     def on_reset(self):
         self.running = False
         self.au.reset()
-        self.textEntry.delete(0, "end")
+        self.text_entry.delete(0, "end")
         self.make_color(None, reset=True)
+        self.make_plot(None, init=True)
     
     def make_color(self, colors, reset=False):
         for col in ["red", "green", "black"]:
@@ -101,8 +108,26 @@ class AlphabetTexter:
                 color = "red"
             self.alphabet_display.tag_add(color, start, end)    
         return
-        
-        
+    
+    def init_plot(self):
+        self.figure = plt.Figure(figsize=(6, 5), dpi=100)
+        self.canvas = FigureCanvasTkAgg(self.figure, self.root)
+        self.canvas.get_tk_widget().grid(row=2, column=0, sticky="news")
+        self.ax = self.figure.add_subplot(111)
+        self.make_plot(None, init=True)
+    
+    def make_plot(self, times, init=False):
+        if init:
+            times = [0.0 for _ in range(25)]
+            
+        x = [chr(i) for i in range(98, 123)]
+        assert(len(times) == 25)
+        self.ax.bar(x, times, color="blue")
+        self.ax.set_xlabel("Time To Press")
+        self.ax.set_ylim(bottom=0, top=0.5)
+        self.ax.set_ylabel("Seconds")
+        self.canvas.draw()
+
 def main():
     root = Tk()
     at = AlphabetTexter(root)
