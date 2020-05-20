@@ -3,6 +3,8 @@ from tkinter.font import Font
 import alphabet_utils
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.animation as animation
+
 import time
 
 class AlphabetTexter:
@@ -61,9 +63,6 @@ class AlphabetTexter:
 
         self.about_me = Label(parent_frame, text="Joseph X Li, 2020", font=self.MASTER_FONT)
         self.about_me.grid(row=5)
-        
-        
-
     
     def on_keystroke(self, *args):
         if self.prev_input == "" or self.running:
@@ -118,8 +117,9 @@ class AlphabetTexter:
         self.make_plot(None, init=True)
     
     def animate(self, i):
-        pass
-        # update rectangles in here. 
+        for rect, height in zip(self.bar_plt_var, self.times):
+            rect.set_height(height)
+        return self.bar_plt_var,
     
     def make_plot(self, times, init=False, erase=False):
         x = [chr(i) for i in range(98, 123)]
@@ -134,7 +134,6 @@ class AlphabetTexter:
             self.ax.set_ylabel("Seconds")
             self.ax.set_ylim(bottom=0, top=0.5)
             self.canvas.draw()
-            # print(self.ax.get_children())
             return
         
         start = time.time()
