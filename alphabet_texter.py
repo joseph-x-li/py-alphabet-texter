@@ -3,6 +3,7 @@ from tkinter.font import Font
 import alphabet_utils
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import time
 
 class AlphabetTexter:
     def __init__(self, parent_frame):
@@ -23,10 +24,8 @@ class AlphabetTexter:
                            font=(self.MASTER_FONT, 16), 
                            relief="ridge")
         self.title.grid(row=0, column=0, sticky="news", ipady=5, ipadx=5)
-
-        self.graph = Canvas(parent_frame, width=380, height=100, background="blue")
-        self.graph.create_text(50, 10, text="Hello World", font=self.MASTER_FONT)
-        self.graph.grid(row=1, column=0)
+        
+        self.init_plot(parent_frame)
 
         self.alphabet_display = Text(parent_frame, width=51, height=1, font=self.MASTER_FONT, bg="green")
         self.alphabet_display.grid(row=2, column=0, sticky="news", ipadx=5, ipady=5)
@@ -62,7 +61,9 @@ class AlphabetTexter:
 
         self.about_me = Label(parent_frame, text="Joseph X Li, 2020", font=self.MASTER_FONT)
         self.about_me.grid(row=5)
-        self.init_plot()
+        
+        
+
     
     def on_keystroke(self, *args):
         if self.prev_input == "" or self.running:
@@ -89,7 +90,7 @@ class AlphabetTexter:
         self.au.reset()
         self.text_entry.delete(0, "end")
         self.make_color(None, reset=True)
-        self.make_plot(None, init=True)
+        self.make_plot(None, erase=True)
     
     def make_color(self, colors, reset=False):
         for col in ["red", "green", "black"]:
@@ -109,24 +110,49 @@ class AlphabetTexter:
             self.alphabet_display.tag_add(color, start, end)    
         return
     
-    def init_plot(self):
-        self.figure = plt.Figure(figsize=(6, 5), dpi=100)
-        self.canvas = FigureCanvasTkAgg(self.figure, self.root)
-        self.canvas.get_tk_widget().grid(row=2, column=0, sticky="news")
+    def init_plot(self, parent_frame):
+        self.figure = plt.Figure(figsize=(3, 4), dpi=100)
+        self.canvas = FigureCanvasTkAgg(self.figure, master=parent_frame)
+        self.canvas.get_tk_widget().grid(row=1, column=0, sticky="news")
         self.ax = self.figure.add_subplot(111)
         self.make_plot(None, init=True)
     
-    def make_plot(self, times, init=False):
+    def animate(self, i):
+        pass
+        # update rectangles in here. 
+    
+    def make_plot(self, times, init=False, erase=False):
+        x = [chr(i) for i in range(98, 123)]
+        if erase:
+            self.ax.clear()
+            init=True
+        
         if init:
             times = [0.0 for _ in range(25)]
+            self.bar_plt_var = self.ax.bar(x, times, color="blue")
+            self.ax.set_xlabel("Time To Press")
+            self.ax.set_ylabel("Seconds")
+            self.ax.set_ylim(bottom=0, top=0.5)
+            self.canvas.draw()
+            # print(self.ax.get_children())
+            return
+        
+        start = time.time()
+        
+        for rect, height in zip(self.bar_plt_var, times):
+            rect.set_height(height)
             
-        x = [chr(i) for i in range(98, 123)]
-        assert(len(times) == 25)
-        self.ax.bar(x, times, color="blue")
-        self.ax.set_xlabel("Time To Press")
-        self.ax.set_ylim(bottom=0, top=0.5)
-        self.ax.set_ylabel("Seconds")
+        end = time.time()
+        
+        # ax.draw_artist(ax.patch)
+        # ax.draw_artist(line)
+        # fig.canvas.update()
+        # fig.canvas.flush_events()
+        
         self.canvas.draw()
+        
+        
+        print(f"{end - start}")
 
 def main():
     root = Tk()
