@@ -1,7 +1,6 @@
 from tkinter import *
-import alphabet_utils
-import alphabet_display as ald
-# import alphabet_graph
+import alphabet_utils, alphabet_display
+import alphabet_graph
 
 class AlphabetTexter:
     def __init__(self, parent_frame):
@@ -19,11 +18,11 @@ class AlphabetTexter:
                            relief="ridge")
         self.title.grid(row=0, column=0, sticky="news", ipady=5, ipadx=5)
         
-        # self.graph = alphabet_graph.AlphabetGraph(parent_frame, (4, 3), 100)
-        # self.graph.grid(row=2, column=0, sticky="news")
+        self.graph = alphabet_graph.AlphabetGraph(parent_frame, figsize=(4.5, 3), dpi=100, interval=100)
+        self.graph.grid(row=1, column=0, sticky="news")
         
-        self.alphabet_display = ald.AlphabetDisplay(parent_frame)
-        self.alphabet_display.grid(row=2, column=0, sticky="news", ipadx=5, ipady=5)
+        self.display = alphabet_display.AlphabetDisplay(parent_frame)
+        self.display.grid(row=2, column=0, sticky="news", ipadx=5, ipady=5)
 
         self.input_var = StringVar()
         self.input_var.trace("w", self.on_keystroke)
@@ -51,9 +50,9 @@ class AlphabetTexter:
     def on_keystroke(self, *args):
         inp = self.input_var.get()
         correct, letter_states, time_array = self.au.tell(inp)
-        self.alphabet_display.set_colors(letter_states, len(inp))
+        self.display.set_colors(letter_states, len(inp))
         time_array = [(round(t, 5) if t >= 0.0 else 0.0) for t in time_array]
-        # self.make_plot(time_array)
+        self.graph.set_times(time_array)
         if correct:
             self.text_entry.config(state="disabled")
             recent_time, best_time = self.au.get_scores()
@@ -65,40 +64,8 @@ class AlphabetTexter:
         self.au.reset()
         self.text_entry.config(state="normal")
         self.text_entry.delete(0, "end")
-        self.alphabet_display.reset()
-        # self.make_plot(None, erase=True)
-    
-    # def init_plot(self, parent_frame):
-    #     self.figure = plt.Figure(figsize=(3, 4), dpi=100)
-    #     self.canvas = FigureCanvasTkAgg(self.figure, master=parent_frame)
-    #     self.canvas.get_tk_widget().grid(row=1, column=0, sticky="news")
-    #     self.ax = self.figure.add_subplot(111)
-    #     self.make_plot(None, init=True)
-    
-    # def animate(self, i):
-    #     for rect, height in zip(self.bar_plt_var, self.times):
-    #         rect.set_height(height)
-    #     return self.bar_plt_var,
-    
-    # def make_plot(self, times, init=False, erase=False):
-    #     x = [chr(i) for i in range(98, 123)]
-    #     if erase:
-    #         self.ax.clear()
-    #         init=True
-        
-    #     if init:
-    #         times = [0.0 for _ in range(25)]
-    #         self.bar_plt_var = self.ax.bar(x, times, color="blue")
-    #         self.ax.set_xlabel("Time To Press")
-    #         self.ax.set_ylabel("Seconds")
-    #         self.ax.set_ylim(bottom=0, top=0.5)
-    #         self.canvas.draw()
-    #         return
-        
-    #     for rect, height in zip(self.bar_plt_var, times):
-    #         rect.set_height(height)
-        
-    #     self.canvas.draw()
+        self.display.reset()
+        self.graph.reset()
 
 
 def main():

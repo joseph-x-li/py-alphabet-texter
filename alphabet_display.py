@@ -3,8 +3,7 @@ import tkinter as tk
 class AlphabetDisplay(tk.Frame):
     def __init__(self, parent, *args, font="Menlo", **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
-        
-        #PDM
+
         self._display = tk.Text(self, width=51, height=1, font=font, bg="brown")
         self._display.pack(fill="both", expand=True)
         self._display.insert("end", "a b c d e f g h i j k l m n o p q r s t u v w x y z")
@@ -19,7 +18,7 @@ class AlphabetDisplay(tk.Frame):
         for col in ["red", "green", "black"]:
             self._display.tag_remove(col, "1.0", "1.51")
         
-        #re-adds tags`
+        #reapplies tags
         for x in range(26):
             start = f"1.{x * 2}"
             end = f"1.{(x * 2) + 1}"
