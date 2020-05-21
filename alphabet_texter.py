@@ -24,13 +24,6 @@ class AlphabetTexter:
         
         self.alphabet_display = ald.AlphabetDisplay(parent_frame)
         self.alphabet_display.grid(row=2, column=0, sticky="news", ipadx=5, ipady=5)
-        # self.alphabet_display = Text(parent_frame, width=51, height=1, font=self.MASTER_FONT, bg="green")
-        # self.alphabet_display.grid(row=2, column=0, sticky="news", ipadx=5, ipady=5)
-        # self.alphabet_display.insert("end", "a b c d e f g h i j k l m n o p q r s t u v w x y z")
-        # self.alphabet_display.configure(state="disabled")
-        # self.alphabet_display.tag_configure("red", foreground="red")
-        # self.alphabet_display.tag_configure("black", foreground="black")
-        # self.alphabet_display.tag_configure("green", foreground="green")
 
         self.input_var = StringVar()
         self.input_var.trace("w", self.on_keystroke)
@@ -59,7 +52,6 @@ class AlphabetTexter:
         inp = self.input_var.get()
         correct, letter_states, time_array = self.au.tell(inp)
         self.alphabet_display.set_colors(letter_states, len(inp))
-        # self.make_color(letter_states)
         time_array = [(round(t, 5) if t >= 0.0 else 0.0) for t in time_array]
         # self.make_plot(time_array)
         if correct:
@@ -74,26 +66,7 @@ class AlphabetTexter:
         self.text_entry.config(state="normal")
         self.text_entry.delete(0, "end")
         self.alphabet_display.reset()
-        # self.make_color(None, reset=True)
         # self.make_plot(None, erase=True)
-    
-    # def make_color(self, colors, reset=False):
-    #     for col in ["red", "green", "black"]:
-    #         self.alphabet_display.tag_remove(col, "1.0", "1.51")
-            
-    #     for x in range(26):
-    #         start = x*2
-    #         end = start + 1
-    #         start = f"1.{start}"
-    #         end = f"1.{end}"
-    #         if reset or x >= len(self.input_var.get()):
-    #             color = "black"
-    #         elif colors[x]:
-    #             color = "green"
-    #         else: 
-    #             color = "red"
-    #         self.alphabet_display.tag_add(color, start, end)    
-    #     return
     
     # def init_plot(self, parent_frame):
     #     self.figure = plt.Figure(figsize=(3, 4), dpi=100)
