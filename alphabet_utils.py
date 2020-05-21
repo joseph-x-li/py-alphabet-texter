@@ -6,6 +6,8 @@ class AlphabetUtils:
         self.KEYLEN = len(self.KEY)
         self.prev = ""
         self.now = ""
+        self.best_time = None
+        self.recent_time = None
         self.times = [-1 for _ in range(self.KEYLEN)]
         
     def __repr__(self):
@@ -13,6 +15,8 @@ class AlphabetUtils:
         base += f"Previous String: {self.prev}\n"
         base += f"Current String: {self.now}\n"
         base += f"KEY: {self.KEY}\n"
+        base += f"Best Time: {self.best_time}\n"
+        base += f"Most Recent Time: {self.recent_time}\n"
         return base
         
     def _calculate_times(self):
@@ -45,9 +49,15 @@ class AlphabetUtils:
         self.prev = self.now
         self.now = current_input
         self._calculate_times()
-        return (current_input == self.KEY, 
+        correct = (current_input == self.KEY)
+        time_diffs = self._get_time_diffs()
+        if correct:
+            self.recent_time = sum(time_diffs)
+            self.best_time = (self.recent_time if self.best_time is None else min(self.best_time, self.recent_time))
+            
+        return (correct, 
                 self._get_correct_chars(),
-                self._get_time_diffs())
+                time_diffs)
         
     def set_KEY(self, new_key):
         self.KEY = new_key
@@ -59,3 +69,12 @@ class AlphabetUtils:
         self.now = ""
         self.times = [-1 for _ in range(self.KEYLEN)]
         return
+    
+    def get_scores(self):
+        x = "-" if self.recent_time is None else f"{self.recent_time:.3f}"
+        y = "-" if self.best_time is None else f"{self.best_time:.3f}"
+        return (x, y)
+    
+    def reset_secores(self):
+        self.recent_time = None
+        self.best_time = None
