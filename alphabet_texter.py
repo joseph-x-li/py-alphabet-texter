@@ -1,18 +1,24 @@
-from tkinter import *
+import tkinter as tk
 import alphabet_graph, alphabet_utils, alphabet_display
 
 
-class AlphabetTexter:
-    def __init__(self, parent_frame):
-        self.root = Frame(parent_frame, bg="red", highlightthickness=1, highlightbackground="black")
-        self.root.grid(row=0, column=0)
+class AlphabetTexter(tk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        tk.Frame.__init__(self, 
+                          parent, 
+                          *args, 
+                          bg="red", 
+                          highlightthickness=1, 
+                          highlightbackground="black", 
+                          **kwargs)
+        self._parent = parent
         
         self.MASTER_FONT = "Menlo"
         self.au = alphabet_utils.AlphabetUtils()
-        self.make_internals(self.root)
+        self.make_internals(self)
     
     def make_internals(self, parent_frame):
-        self.title = Label(parent_frame, 
+        self.title = tk.Label(parent_frame, 
                            text="Welcome to Alphabet Texter, Python Edition", 
                            font=(self.MASTER_FONT, 16), 
                            relief="ridge")
@@ -24,27 +30,27 @@ class AlphabetTexter:
         self.display = alphabet_display.AlphabetDisplay(parent_frame)
         self.display.grid(row=2, column=0, sticky="news", ipadx=5, ipady=5)
 
-        self.input_var = StringVar()
+        self.input_var = tk.StringVar()
         self.input_var.trace("w", self.on_keystroke)
         
-        self.text_entry = Entry(parent_frame, textvariable = self.input_var, font=self.MASTER_FONT, width=26)
+        self.text_entry = tk.Entry(parent_frame, textvariable = self.input_var, font=self.MASTER_FONT, width=26)
         self.text_entry.grid(row=3)
         self.text_entry.focus()
 
-        self.util_frame = Frame(parent_frame)
+        self.util_frame = tk.Frame(parent_frame)
         self.util_frame.grid(row=4, sticky="ew")
 
-        self.previous_time_label = Label(self.util_frame, text=f"Recent Time: -", font=self.MASTER_FONT, bg="purple")
+        self.previous_time_label = tk.Label(self.util_frame, text=f"Recent Time: -", font=self.MASTER_FONT, bg="purple")
         self.previous_time_label.grid(row=0, column=0, sticky="w")
 
-        self.best_time_label = Label(self.util_frame, text=f"Best Time: -", font=self.MASTER_FONT, bg="orange")
+        self.best_time_label = tk.Label(self.util_frame, text=f"Best Time: -", font=self.MASTER_FONT, bg="orange")
         self.best_time_label.grid(row=0, column=1, sticky="w")
 
-        self.reset_button = Button(self.util_frame, text="Reset", font=self.MASTER_FONT, command=self.on_reset, bg="yellow")
+        self.reset_button = tk.Button(self.util_frame, text="Reset", font=self.MASTER_FONT, command=self.on_reset, bg="yellow")
         self.reset_button.grid(row=0, column=2, sticky="e")
         self.util_frame.grid_columnconfigure(2, weight=1)
 
-        self.about_me = Label(parent_frame, text="Joseph X Li, 2020", font=self.MASTER_FONT)
+        self.about_me = tk.Label(parent_frame, text="Joseph X Li, 2020", font=self.MASTER_FONT)
         self.about_me.grid(row=5)
     
     def on_keystroke(self, *args):
@@ -69,13 +75,10 @@ class AlphabetTexter:
 
 
 def main():
-    root = Tk()
-    at = AlphabetTexter(root)
+    root = tk.Tk()
+    root.title("py-alphabet-texter")
+    at = AlphabetTexter(root).pack(side="top", fill="both", expand=True)
     root.mainloop()
 
 if __name__ == "__main__":
     main()
-
-
-
-# root.title("py-alphabet-texter")
