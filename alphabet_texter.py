@@ -1,6 +1,6 @@
 from tkinter import *
-import alphabet_utils, alphabet_display
-import alphabet_graph
+import alphabet_graph, alphabet_utils, alphabet_display
+
 
 class AlphabetTexter:
     def __init__(self, parent_frame):
