@@ -54,7 +54,7 @@ class AlphabetGraph(tk.Frame):
 def main():
     root = tk.Tk()
     AlphabetGraph(root, figsize=(4, 3), dpi=100).pack(side="top", fill="both", expand=True)
-    root.mainloop(), 
+    root.mainloop()
 
 if __name__ == "__main__":
     main()

@@ -76,7 +76,6 @@ class AlphabetTexter(tk.Frame):
         self.display.reset()
         self.graph.reset()
 
-
 def main():
     root = tk.Tk()
     root.title("py-alphabet-texter")

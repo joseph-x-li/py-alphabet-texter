@@ -29,13 +29,11 @@ class AlphabetDisplay(tk.Frame):
             else: 
                 color = "red"
             self._display.tag_add(color, start, end)    
-        
     
     def _make_tags(self):
         self._display.tag_configure("red", foreground="red")
         self._display.tag_configure("black", foreground="black")
         self._display.tag_configure("green", foreground="green")
-
 
 def main():
     root = tk.Tk()

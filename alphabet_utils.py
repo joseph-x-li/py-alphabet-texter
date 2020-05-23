@@ -11,8 +11,7 @@ class AlphabetUtils:
         self.times = [-1 for _ in range(self.KEYLEN)]
         
     def __repr__(self):
-        base = ""
-        base += f"Previous String: {self.prev}\n"
+        base = f"Previous String: {self.prev}\n"
         base += f"Current String: {self.now}\n"
         base += f"KEY: {self.KEY}\n"
         base += f"Best Time: {self.best_time}\n"
