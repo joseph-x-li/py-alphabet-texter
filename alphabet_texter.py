@@ -49,9 +49,12 @@ class AlphabetTexter(tk.Frame):
 
         self.best_time_label = tk.Label(self.util_frame, text=f"Best Time: -", font=self.MASTER_FONT, bg="orange")
         self.best_time_label.grid(row=0, column=1, sticky="nws")
+        
+        self.live_graph_box = tk.Checkbutton(self.util_frame)
+        self.live_graph_box.grid(row=0, column=2, sticky="nes")
 
         self.reset_button = tk.Button(self.util_frame, text="Reset", font=self.MASTER_FONT, command=self.on_reset, bg="yellow")
-        self.reset_button.grid(row=0, column=2, sticky="news")
+        self.reset_button.grid(row=0, column=3, sticky="news")
 
         self.about_me = tk.Label(parent_frame, text="Joseph X Li, 2020", font=(self.MASTER_FONT, 8), bg="blue")
         self.about_me.grid(row=5, column=0, sticky="nws", ipady=5)
