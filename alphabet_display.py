@@ -1,12 +1,15 @@
 import tkinter as tk
 
 class AlphabetDisplay(tk.Frame):
-    def __init__(self, parent, *args, font="Menlo", **kwargs):
+    def __init__(self, parent, *args, font="Menlo", text=None, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
 
         self._display = tk.Text(self, width=51, height=1, font=font, bg="brown")
         self._display.pack(fill="both", expand=True)
-        self._display.insert("end", "a b c d e f g h i j k l m n o p q r s t u v w x y z")
+        if text is None:
+            self._display.insert("end", "a b c d e f g h i j k l m n o p q r s t u v w x y z")
+        else:
+            self._display.insert("end", text)
         self._display.configure(state="disabled")
         self._make_tags()
         
