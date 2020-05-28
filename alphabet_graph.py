@@ -16,7 +16,7 @@ class AlphabetGraph(tk.Frame):
         interval = max(100, interval)
         self.key = key
         self.key_len = len(key)
-        self._times = [0.0 for _ in range(self.key_len)]
+        self._times = [0.0 for _ in range(self.key_len - 1)]
         self._x = list(key)[1:]
         self._figure, self._ax = plt.subplots(figsize=(self.key_len / self.X_SCALE,
                                                        self.FRAME_HEIGHT), 
@@ -59,7 +59,7 @@ class AlphabetGraph(tk.Frame):
         
 def main():
     root = tk.Tk()
-    AlphabetGraph(root, dpi=100, key="abcdefghijklmnopqrstuvwxyz").pack(side="top", fill="both", expand=True)
+    AlphabetGraph(root, dpi=100, key="abpqrstuvwxyz").pack(side="top", fill="both", expand=True)
     root.mainloop()
 
 if __name__ == "__main__":
