@@ -3,6 +3,20 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.animation import FuncAnimation
 
+class WidthError(Exception):
+    """Raised when a list of the wrong length is passed to set_times
+
+    Attributes:
+        given -- the given width of the list
+        correct -- the correct width of the list
+        message -- explanation of the error
+    """
+
+    def __init__(self, given, correct, message = ""):
+        self.message = message
+        self.given = given
+        self.correct = correct
+        super().__init__(self.message)
 
 class AlphabetGraph(tk.Frame):
     FRAME_HEIGHT = 3

@@ -1,15 +1,17 @@
 import tkinter as tk
 
 class AlphabetDisplay(tk.Frame):
-    def __init__(self, parent, *args, font="Menlo", text=None, **kwargs):
+    def __init__(self, parent, key, *args, font="Menlo", **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
 
-        self._display = tk.Text(self, width=51, height=1, font=font, bg="brown")
-        self._display.pack(fill="both", expand=True)
-        if text is None:
-            self._display.insert("end", "a b c d e f g h i j k l m n o p q r s t u v w x y z")
-        else:
-            self._display.insert("end", text)
+        self.key = key
+        self.key_len = len(key)
+        self._display = tk.Text(self, width=self.key_len, height=1, font=font
+                                , bg="brown"
+                                )
+        self._display.grid(row=0, column=0) # empty sticky means default to center
+        # pack(fill="both", expand=True)
+        self._display.insert("end", self.key)
         self._display.configure(state="disabled")
         self._make_tags()
         
@@ -18,11 +20,11 @@ class AlphabetDisplay(tk.Frame):
         
     def set_colors(self, correct, max_len):
         #removes all tags
-        for col in ["red", "green", "black"]:
-            self._display.tag_remove(col, "1.0", "1.51")
+        for color in ["red", "green", "black"]:
+            self._display.tag_remove(color, "1.0", f"1.{self.key_len}")
         
         #reapplies tags
-        for x in range(26):
+        for x in range(self.key_len):
             start = f"1.{x * 2}"
             end = f"1.{(x * 2) + 1}"
             if x >= max_len or correct is None:
@@ -40,7 +42,7 @@ class AlphabetDisplay(tk.Frame):
 
 def main():
     root = tk.Tk()
-    AlphabetDisplay(root).pack(side="top", fill="both", expand=True)
+    AlphabetDisplay(root, key="asdf", bg="red").pack(side="top", fill="both", expand=True)
     root.mainloop()
 
 if __name__ == "__main__":
