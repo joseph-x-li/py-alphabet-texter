@@ -1,6 +1,6 @@
 import tkinter as tk
 
-class AlphabetDisplay(tk.Frame):
+class AlphabetDisplay(tk.Frame): # change to extend Text
     def __init__(self, parent, *args, font="Menlo", text=None, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
 
