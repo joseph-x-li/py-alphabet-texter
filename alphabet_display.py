@@ -1,8 +1,8 @@
 import tkinter as tk
 
-class AlphabetDisplay(tk.Frame):
+class AlphabetDisplay(tk.Text):
     def __init__(self, parent, key, *args, font="Menlo", **kwargs):
-        tk.Frame.__init__(self, parent, *args, **kwargs)
+        tk.Text.__init__(self, master=parent, *args, **kwargs)
 
         self.key = key
         self.key_len = len(key)
