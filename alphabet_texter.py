@@ -55,10 +55,12 @@ class AlphabetTexter(tk.Frame):
         for i in range(3):
             self.util_frame.grid_columnconfigure(i, weight=1)
 
-        self.previous_time_label = tk.Label(self.util_frame,
-                                            text=f"Recent Time: -",
-                                            font=self.MASTER_FONT,
-                                            bg="purple")
+        self.previous_time_label = tk.Label(
+                self.util_frame,
+                text=f"Recent Time: -",
+                font=self.MASTER_FONT,
+                bg="purple"
+            )
         self.previous_time_label.grid(row=0, column=0, sticky="nws")
 
         self.best_time_label = tk.Label(self.util_frame,
