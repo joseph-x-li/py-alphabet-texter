@@ -13,9 +13,7 @@ class AlphabetDisplay(tk.Frame):
         self._make_tags()
 
     def _make_widget(self):
-        self._display = tk.Text(self, width=self.key_len,
-                                height=1,
-                                font=self.font)
+        self._display = tk.Text(self, width=self.key_len, height=1, font=self.font)
         self._display.grid(row=0, column=0, sticky="")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
@@ -56,9 +54,7 @@ class AlphabetDisplay(tk.Frame):
 
 def main():
     root = tk.Tk()
-    AlphabetDisplay(root, key="asdf").pack(side="top",
-                                           fill="both",
-                                           expand=True)
+    AlphabetDisplay(root, key="test_string").pack(side="top", fill="both", expand=True)
     root.mainloop()
 
 

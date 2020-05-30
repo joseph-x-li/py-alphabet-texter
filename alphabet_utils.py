@@ -24,7 +24,7 @@ class AlphabetUtils:
             if i >= len(self.now):
                 self.times[i] = -1
             elif i >= len(self.prev):
-                if (self.now[i] == self.key[i]):
+                if self.now[i] == self.key[i]:
                     self.times[i] = time.time()
                 else:
                     self.times[i] = -1
@@ -43,25 +43,25 @@ class AlphabetUtils:
         return base
 
     def _get_time_diffs(self):
-        return [(y - x)
-                for (x, y) in zip(self.times[:(self.keylen - 1)],
-                                  self.times[1:])]
+        return [
+            (y - x) for (x, y) in zip(self.times[: (self.keylen - 1)], self.times[1:])
+        ]
 
     def tell(self, current_input):
         self.prev = self.now
         self.now = current_input
         self._calculate_times()
-        correct = (current_input == self.key)
+        correct = current_input == self.key
         time_diffs = self._get_time_diffs()
         if correct:
             self.recent_time = sum(time_diffs)
-            self.best_time = (self.recent_time
-                              if self.best_time is None
-                              else min(self.best_time, self.recent_time))
+            self.best_time = (
+                self.recent_time
+                if self.best_time is None
+                else min(self.best_time, self.recent_time)
+            )
 
-        return (correct,
-                self._get_correct_chars(),
-                time_diffs)
+        return (correct, self._get_correct_chars(), time_diffs)
 
     def set_key(self, new_key):
         self.key = new_key
