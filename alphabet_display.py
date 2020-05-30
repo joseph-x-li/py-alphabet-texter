@@ -21,7 +21,7 @@ class AlphabetDisplay(tk.Frame):
         self._display.configure(state="disabled")
 
     def _make_tags(self):
-        self._display.tag_configure("red", foreground="red")
+        self._display.tag_configure("red", foreground="black", background="red")
         self._display.tag_configure("black", foreground="black")
         self._display.tag_configure("green", foreground="green")
 
