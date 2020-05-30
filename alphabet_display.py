@@ -1,8 +1,8 @@
 import tkinter as tk
 
 class AlphabetDisplay(tk.Frame):
-    def __init__(self, parent, key, *args, font="Menlo", **kwargs):
-        tk.Text.__init__(self, master=parent, *args, **kwargs)
+    def __init__(self, parent, key, *args, font=("Menlo", 12), **kwargs):
+        tk.Frame.__init__(self, parent, *args, **kwargs)
 
         self.key = key
         self.key_len = len(key)
@@ -18,20 +18,21 @@ class AlphabetDisplay(tk.Frame):
         self.set_colors(None, 0)
         
     def set_colors(self, correct, max_len):
-        #removes all tags
+        # removes all tags
         for color in ["red", "green", "black"]:
             self._display.tag_remove(color, "1.0", f"1.{self.key_len}")
         
-        #reapplies tags
+        # reapplies tags
         for x in range(self.key_len):
-            start = f"1.{x * 2}"
-            end = f"1.{(x * 2) + 1}"
             if x >= max_len or correct is None:
                 color = "black"
             elif correct[x]:
                 color = "green"
             else: 
                 color = "red"
+                
+            start = f"1.{x * 2}"
+            end = f"1.{(x * 2) + 1}"
             self._display.tag_add(color, start, end)    
     
     def _make_tags(self):
