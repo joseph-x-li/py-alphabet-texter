@@ -6,13 +6,10 @@ class AlphabetDisplay(tk.Frame):
 
         self.key = key
         self.key_len = len(key)
-        self._display = tk.Text(self, width=self.key_len, height=1, font=font
-                                , bg="brown"
-                                )
+        self._display = tk.Text(self, width=self.key_len, height=1, font=font)
         self._display.grid(row=0, column=0, sticky="") # empty sticky means default to center
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
-        # pack(fill="both", expand=True)
         self._display.insert("end", self.key)
         self._display.configure(state="disabled")
         self._make_tags()
@@ -44,7 +41,7 @@ class AlphabetDisplay(tk.Frame):
 
 def main():
     root = tk.Tk()
-    AlphabetDisplay(root, key="asdf", bg="red").pack(side="top", fill="both", expand=True)
+    AlphabetDisplay(root, key="asdf").pack(side="top", fill="both", expand=True)
     root.mainloop()
 
 if __name__ == "__main__":
