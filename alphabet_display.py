@@ -1,6 +1,6 @@
 import tkinter as tk
 
-class AlphabetDisplay(tk.Text):
+class AlphabetDisplay(tk.Frame):
     def __init__(self, parent, key, *args, font="Menlo", **kwargs):
         tk.Text.__init__(self, master=parent, *args, **kwargs)
 
@@ -9,7 +9,9 @@ class AlphabetDisplay(tk.Text):
         self._display = tk.Text(self, width=self.key_len, height=1, font=font
                                 , bg="brown"
                                 )
-        self._display.grid(row=0, column=0) # empty sticky means default to center
+        self._display.grid(row=0, column=0, sticky="") # empty sticky means default to center
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
         # pack(fill="both", expand=True)
         self._display.insert("end", self.key)
         self._display.configure(state="disabled")
