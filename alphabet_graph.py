@@ -1,19 +1,10 @@
 import tkinter as tk
-
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 class WidthError(Exception):
-    """Raised when a list of the wrong length is passed to set_times
-
-    Attributes:
-        given -- the given width of the list
-        correct -- the correct width of the list
-        message -- explanation of the error
-    """
-
     def __init__(self, given, correct, message=""):
         self.message = message
         self.given = given
@@ -24,10 +15,9 @@ class WidthError(Exception):
 class AlphabetGraph(tk.Frame):
     FRAME_HEIGHT = 3
     X_SCALE = 5
+    BAR_COLOR = "blue"
 
-    def __init__(
-        self, parent, dpi, key, *args, color="blue", ytop=0.5, interval=100, **kwargs
-    ):
+    def __init__(self, parent, dpi, key, *args, ylim=0.5, interval=100, **kwargs):
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self._parent = parent
 
@@ -44,13 +34,13 @@ class AlphabetGraph(tk.Frame):
         self._canvas = FigureCanvasTkAgg(self._figure, master=self)
         self._canvas.get_tk_widget().pack(fill="both", expand=True)
 
-        self._barcontainer = self._ax.bar(self._x, self._times, color=color)
+        self._barcontainer = self._ax.bar(self._x, self._times, color=self.BAR_COLOR)
         # ^ is a tuple containing (patches, errorbar), where patches is a list
         # of rectangle objects (where rectangles are artists)
 
         self._ax.set_xlabel("Time To Press")
         self._ax.set_ylabel("Seconds")
-        self._ax.set_ylim(bottom=0, top=ytop)
+        self._ax.set_ylim(bottom=0, top=ylim)
         self._figure.tight_layout()
 
         # animation, 10ms frame speed

@@ -20,6 +20,11 @@ class AlphabetDisplay(tk.Frame):
         self._display.insert("end", self.key)
         self._display.configure(state="disabled")
 
+    def _make_tags(self):
+        self._display.tag_configure("red", foreground="red")
+        self._display.tag_configure("black", foreground="black")
+        self._display.tag_configure("green", foreground="green")
+
     def set_key(self, new_key):
         self.key = new_key
         self.key_len = len(new_key)
@@ -45,11 +50,6 @@ class AlphabetDisplay(tk.Frame):
             start = f"1.{x * 2}"
             end = f"1.{(x * 2) + 1}"
             self._display.tag_add(color, start, end)
-
-    def _make_tags(self):
-        self._display.tag_configure("red", foreground="red")
-        self._display.tag_configure("black", foreground="black")
-        self._display.tag_configure("green", foreground="green")
 
 
 def main():

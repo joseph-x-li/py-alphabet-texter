@@ -2,7 +2,7 @@ import time
 
 
 class AlphabetUtils:
-    def __init__(self, key="abcdefghijklmnopqrstuvwxyz"):
+    def __init__(self, key):
         self.key = key
         self.keylen = len(self.key)
         self.prev = ""
