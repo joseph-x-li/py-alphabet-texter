@@ -13,7 +13,7 @@ class WidthError(Exception):
 
 
 class AlphabetGraph(tk.Frame):
-    FRAME_HEIGHT = 3
+    FRAME_HEIGHT = 3 # inches
     X_SCALE = 5
     BAR_COLOR = "blue"
 
@@ -26,7 +26,7 @@ class AlphabetGraph(tk.Frame):
         self.key = key
         self.key_len = len(key)
         self._times = [0.0 for _ in range(self.key_len - 1)]
-        self._x = list(key)[1:]
+        self._x = (list(key))[1:]
         self._figure, self._ax = plt.subplots(
             figsize=(self.key_len / self.X_SCALE, self.FRAME_HEIGHT), dpi=dpi
         )
@@ -34,10 +34,13 @@ class AlphabetGraph(tk.Frame):
         self._canvas = FigureCanvasTkAgg(self._figure, master=self)
         self._canvas.get_tk_widget().pack(fill="both", expand=True)
 
-        self._barcontainer = self._ax.bar(self._x, self._times, color=self.BAR_COLOR)
+        xticks = range(self.key_len - 1)
+        self._barcontainer = self._ax.bar(xticks, self._times, color=self.BAR_COLOR)
         # ^ is a tuple containing (patches, errorbar), where patches is a list
         # of rectangle objects (where rectangles are artists)
 
+        self._ax.set_xticklabels(self._x)  # FIX THIS SHIT
+        raise NotImplementedError("fix line 42, tag FIX THIS SHIT")
         self._ax.set_xlabel("Time To Press")
         self._ax.set_ylabel("Seconds")
         self._ax.set_ylim(bottom=0, top=ylim)
@@ -71,7 +74,7 @@ class AlphabetGraph(tk.Frame):
 
 def main():
     root = tk.Tk()
-    AlphabetGraph(root, dpi=100, key="abpqrstuvwxyz").pack(
+    AlphabetGraph(root, dpi=100, key="zzzzzzzz").pack(
         side="top", fill="both", expand=True
     )
     root.mainloop()

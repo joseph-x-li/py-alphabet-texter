@@ -9,10 +9,10 @@ class AlphabetDisplay(tk.Frame):
         self._key = key
         self._key_len = len(key)
         self._font = font
-        self._make_widget()
+        self._build_widget()
         self._make_tags()
 
-    def _make_widget(self):
+    def _build_widget(self):
         self._display = tk.Text(self, width=self._key_len, height=1, font=self._font)
         self._display.grid(row=0, column=0, sticky="")
         self.grid_columnconfigure(0, weight=1)
@@ -29,7 +29,7 @@ class AlphabetDisplay(tk.Frame):
     def set_key(self, new_key):
         self._key = new_key
         self._key_len = len(new_key)
-        self._make_widget()
+        self._build_widget()
 
     def set_colors(self, correct, max_len):
 
