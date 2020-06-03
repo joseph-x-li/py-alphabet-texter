@@ -12,12 +12,7 @@ class AlphabetUtils:
         self.times = [-1 for _ in range(self.keylen)]
 
     def __repr__(self):
-        base = f"Previous String: {self.prev}\n"
-        base += f"Current String: {self.now}\n"
-        base += f"Key: {self.key}\n"
-        base += f"Best Time: {self.best_time}\n"
-        base += f"Most Recent Time: {self.recent_time}\n"
-        return base
+        return f"AlphabetUtils({self.key})"
 
     def _calculate_times(self):
         for i in range(self.keylen):
@@ -36,11 +31,11 @@ class AlphabetUtils:
         return
 
     def _get_correct_chars(self):
-        base = [False for _ in range(self.keylen)]
+        ret_val = [False for _ in range(self.keylen)]
         for i in range(min(len(self.now), self.keylen)):
             if self.now[i] == self.key[i]:
-                base[i] = True
-        return base
+                ret_val[i] = True
+        return ret_val
 
     def _get_time_diffs(self):
         return [
