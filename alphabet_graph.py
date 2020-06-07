@@ -13,7 +13,7 @@ class WidthError(Exception):
 
 
 class AlphabetGraph(tk.Frame):
-    FRAME_HEIGHT = 3 # inches
+    FRAME_HEIGHT = 3  # inches
     X_SCALE = 5
     BAR_COLOR = "blue"
 
