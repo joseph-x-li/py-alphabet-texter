@@ -26,7 +26,7 @@ class AlphabetGraph(tk.Frame):
             key (string): Comparison string.
             ylim (float, optional): Y-limit of resulting graph. Defaults to 0.5.
             interval (int, optional): Update interval, in milliseconds. 
-                Values below 100 will defaults to 100. Defaults to 100.
+                Values below 100 will default to 100. Defaults to 100.
 
         Raises:
             NotImplementedError: [description]

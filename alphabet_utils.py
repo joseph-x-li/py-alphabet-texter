@@ -2,7 +2,15 @@ import time
 
 
 class AlphabetUtils:
+    """Keep track of best times and correct/incorrect character inputs
+    """
+
     def __init__(self, key):
+        """Initialize an AlphabetUtils object.
+
+        Args:
+            key (string): Reference string
+        """
         self.key = key
         self.keylen = len(self.key)
         self.prev = ""
@@ -43,6 +51,16 @@ class AlphabetUtils:
         ]
 
     def tell(self, current_input):
+        """Test the user's current input against the key.
+
+        Args:
+            current_input (string): The user's input.
+
+        Returns:
+            (bool, List, List): Boolean of whether current_input == key,
+                boolean list of correct characters,
+                float list of time differentials
+        """
         self.prev = self.now
         self.now = current_input
         self._calculate_times()
@@ -59,21 +77,36 @@ class AlphabetUtils:
         return (correct, self._get_correct_chars(), time_diffs)
 
     def set_key(self, new_key):
+        """Set a new key.
+
+        Args:
+            new_key (string): The new key.
+        """
         self.key = new_key
         self.keylen = len(self.key)
         return
 
     def reset(self):
+        """Reset all data fields, excluding best, recent, and key.
+        """
         self.prev = ""
         self.now = ""
         self.times = [-1 for _ in range(self.keylen)]
         return
 
     def get_scores(self):
+        """Get recent and best scores.
+
+        Returns:
+            (string, string): First string is recent time. Second string is best time.
+                Returns "-" if no recent/best time can be found.
+        """
         x = "-" if self.recent_time is None else f"{self.recent_time:.3f}"
         y = "-" if self.best_time is None else f"{self.best_time:.3f}"
         return (x, y)
 
     def reset_secores(self):
+        """Reset best and recent times.
+        """
         self.recent_time = None
         self.best_time = None
