@@ -4,14 +4,6 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
-class WidthError(Exception):
-    def __init__(self, given, correct, message=""):
-        self.message = message
-        self.given = given
-        self.correct = correct
-        super().__init__(self.message)
-
-
 class AlphabetGraph(tk.Frame):
     FRAME_HEIGHT = 3  # inches
     X_SCALE = 5

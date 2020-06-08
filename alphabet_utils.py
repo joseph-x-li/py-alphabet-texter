@@ -2,9 +2,6 @@ import time
 
 
 class AlphabetUtils:
-    """Keep track of best times and correct/incorrect character inputs
-    """
-
     def __init__(self, key):
         """Initialize an AlphabetUtils object.
 

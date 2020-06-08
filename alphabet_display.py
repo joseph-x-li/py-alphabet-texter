@@ -3,6 +3,13 @@ import tkinter as tk
 
 class AlphabetDisplay(tk.Frame):
     def __init__(self, parent, key, *args, font=("Menlo", 12), **kwargs):
+        """Initialize an Alphabet Display object.
+
+        Args:
+            parent (tk.Frame): Parent tkinter frame.
+            key (string): Input key.
+            font (tuple, optional): Display font. Defaults to ("Menlo", 12).
+        """
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self._parent = parent
 
@@ -27,12 +34,22 @@ class AlphabetDisplay(tk.Frame):
         self._display.tag_configure("green", foreground="black", background="green")
 
     def set_key(self, new_key):
+        """Set a new key.
+
+        Args:
+            new_key (string): The new key.
+        """
         self._key = new_key
         self._key_len = len(new_key)
         self._build_widget()
 
     def set_colors(self, correct, max_len):
+        """Set colors of text.
 
+        Args:
+            correct (List): List of correct characters.
+            max_len (int): Length of current user input.
+        """
         # removes all tags
         for color in ["red", "green", "black"]:
             self._display.tag_remove(color, "1.0", f"1.{self._key_len}")
@@ -51,6 +68,8 @@ class AlphabetDisplay(tk.Frame):
             self._display.tag_add(color, start, end)
 
     def reset(self):
+        """Reset all colors to black.
+        """
         self.set_colors(None, 0)
 
 
