@@ -18,6 +18,19 @@ class AlphabetGraph(tk.Frame):
     BAR_COLOR = "blue"
 
     def __init__(self, parent, dpi, key, *args, ylim=0.5, interval=100, **kwargs):
+        """Initializes AlphabetGraph object.
+
+        Args:
+            parent (tk.Frame): parent tkinter frame.
+            dpi (int): Dots-per-inch of resulting object.
+            key (string): Comparison string.
+            ylim (float, optional): Y-limit of resulting graph. Defaults to 0.5.
+            interval (int, optional): Update interval, in milliseconds. 
+                Values below 100 will defaults to 100. Defaults to 100.
+
+        Raises:
+            NotImplementedError: [description]
+        """
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self._parent = parent
 
@@ -64,17 +77,23 @@ class AlphabetGraph(tk.Frame):
         return self._barcontainer.patches
 
     def set_times(self, times):
+        """Sets times on the time graph.
+
+        Args:
+            times (List): List of length self.key_len with non-negative times 
+            for each interval.
+        """
         self._times = times
-        return
 
     def reset(self):
+        """Resets all times to 0.0.
+        """
         self._times = [0.0 for _ in range(self.key_len - 1)]
-        return
 
 
 def main():
     root = tk.Tk()
-    AlphabetGraph(root, dpi=100, key="zzzzzzzz").pack(
+    AlphabetGraph(root, dpi=100, key="abcdefghijklmnopqrstuvwxyz").pack(
         side="top", fill="both", expand=True
     )
     root.mainloop()
