@@ -11,7 +11,9 @@ This aids in targeting the typing routine
 The current world record for typing the alphabet is approximately 1.3 seconds (unofficial).
 
 TODO:
- - [ ] Allow for any test string, with presets for alphabet, backwards alphabet
+ - [x] Allow for any test string, with presets for alphabet, backwards alphabet
+ - [x] Black Formatting
+ - [ ] Sphinx Docs
  - [ ] Add in errors and error handling
  - [ ] Format github
  - [ ] Determine matplotlib direct artist change feasiblilty

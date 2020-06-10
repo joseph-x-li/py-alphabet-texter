@@ -51,7 +51,6 @@ class AlphabetGraph(tk.Frame):
         self._ax.set_ylim(bottom=0, top=ylim)
         self._figure.tight_layout()
 
-        # animation, 10ms frame speed
         self._anim = FuncAnimation(
             self._figure,
             self._animate,
