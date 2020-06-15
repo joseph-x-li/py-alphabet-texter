@@ -22,12 +22,15 @@ class AlphabetGraph(tk.Frame):
         """
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self._parent = parent
+        self._ylim = ylim
+        self._interval = max(100, interval)
+        self._dpi = dpi
+        self._make_internals(parent, dpi, key, ylim, interval)
 
-        # private data members
-        interval = max(100, interval)
+    def _make_internals(self, parent, dpi, key, ylim, interval):
         self.key = key
         self.key_len = len(key)
-        self._times = [0.2 for _ in range(self.key_len - 1)]
+        self.times = [0.0 for _ in range(self.key_len - 1)]
         self._x = (list(key))[1:]
         self._figure, self._ax = plt.subplots(
             figsize=(self.key_len / self.X_SCALE, self.FRAME_HEIGHT), dpi=dpi
@@ -36,16 +39,16 @@ class AlphabetGraph(tk.Frame):
         self._canvas = FigureCanvasTkAgg(self._figure, master=self)
         self._canvas.get_tk_widget().pack(fill="both", expand=True)
 
-        xticks = [
-            str(i) for i in range(self.key_len - 1)
-        ]  # str necessary to prevent number line x-axis
+        # str necessary to prevent scalar x-axis
+        xticks = [str(i) for i in range(self.key_len - 1)]
+
         self._barcontainer = self._ax.bar(
-            x=xticks, height=self._times, color=self.BAR_COLOR
+            x=xticks, height=self.times, color=self.BAR_COLOR
         )
         # ^ is a tuple containing (patches, errorbar), where patches is a list
         # of rectangle objects (where rectangles are artists)
-        
-        self._ax.set_xticklabels(self._x) 
+
+        self._ax.set_xticklabels(self._x)
         self._ax.set_xlabel("Time To Press")
         self._ax.set_ylabel("Seconds")
         self._ax.set_ylim(bottom=0, top=ylim)
@@ -63,7 +66,7 @@ class AlphabetGraph(tk.Frame):
         return self._animate(0)
 
     def _animate(self, i):
-        for rect, height in zip(self._barcontainer.patches, self._times):
+        for rect, height in zip(self._barcontainer.patches, self.times):
             rect.set_height(height)
         return self._barcontainer.patches
 
@@ -74,17 +77,22 @@ class AlphabetGraph(tk.Frame):
             times (List[float]): List of length self.key_len with non-negative times 
             for each interval.
         """
-        self._times = times
+        self.times = times
+
+    def set_key(self, new_key):
+        self._make_internals(
+            self._parent, self._dpi, new_key, self._ylim, self._interval
+        )
 
     def reset(self):
         """Resets all times to 0.0.
         """
-        self._times = [0.0 for _ in range(self.key_len - 1)]
+        self.times = [0.0 for _ in range(self.key_len - 1)]
 
 
 def main():
     root = tk.Tk()
-    AlphabetGraph(root, dpi=100, key="a b c d e").pack(
+    AlphabetGraph(root, dpi=100, key="1123455").pack(
         side="top", fill="both", expand=True
     )
     root.mainloop()

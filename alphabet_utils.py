@@ -10,8 +10,8 @@ class AlphabetUtils:
         """
         self.key = key
         self.keylen = len(self.key)
-        self.prev = ""
-        self.now = ""
+        self._prev = ""
+        self._now = ""
         self.best_time = None
         self.recent_time = None
         self.times = [-1 for _ in range(self.keylen)]
@@ -21,24 +21,23 @@ class AlphabetUtils:
 
     def _calculate_times(self):
         for i in range(self.keylen):
-            if i >= len(self.now):
+            if i >= len(self._now):
                 self.times[i] = -1
-            elif i >= len(self.prev):
-                if self.now[i] == self.key[i]:
+            elif i >= len(self._prev):
+                if self._now[i] == self.key[i]:
                     self.times[i] = time.time()
                 else:
                     self.times[i] = -1
-            elif self.now[i] != self.prev[i]:
-                if self.now[i] == self.key[i]:
+            elif self._now[i] != self._prev[i]:
+                if self._now[i] == self.key[i]:
                     self.times[i] = time.time()
                 else:
                     self.times[i] = -1
-        return
 
     def _get_correct_chars(self):
         ret_val = [False for _ in range(self.keylen)]
-        for i in range(min(len(self.now), self.keylen)):
-            if self.now[i] == self.key[i]:
+        for i in range(min(len(self._now), self.keylen)):
+            if self._now[i] == self.key[i]:
                 ret_val[i] = True
         return ret_val
 
@@ -54,12 +53,12 @@ class AlphabetUtils:
             current_input (string): The user's input.
 
         Returns:
-            (bool, List, List): Boolean of whether current_input == key,
-                boolean list of correct characters,
-                float list of time differentials
+            (bool, List[bool], List[float]): Boolean of whether current_input == key,
+                list of correct characters,
+                list of time differentials
         """
-        self.prev = self.now
-        self.now = current_input
+        self._prev = self._now
+        self._now = current_input
         self._calculate_times()
         correct = current_input == self.key
         time_diffs = self._get_time_diffs()
@@ -74,22 +73,21 @@ class AlphabetUtils:
         return (correct, self._get_correct_chars(), time_diffs)
 
     def set_key(self, new_key):
-        """Set a new key.
+        """Set a new key and reset all times.
 
         Args:
             new_key (string): The new key.
         """
         self.key = new_key
         self.keylen = len(self.key)
-        return
+        self.reset()
 
     def reset(self):
         """Reset all data fields, excluding best, recent, and key.
         """
-        self.prev = ""
-        self.now = ""
+        self._prev = ""
+        self._now = ""
         self.times = [-1 for _ in range(self.keylen)]
-        return
 
     def get_scores(self):
         """Get recent and best scores.

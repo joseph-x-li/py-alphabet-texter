@@ -7,6 +7,7 @@ import alphabet_utils
 
 class AlphabetTexter(tk.Frame):
     MASTER_FONT = "Menlo"
+    KEY = "abcdefghijklmnopqrstuvwxyz"
 
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(
@@ -20,7 +21,7 @@ class AlphabetTexter(tk.Frame):
         )
         self._parent = parent
 
-        self.au = alphabet_utils.AlphabetUtils()
+        self.au = alphabet_utils.AlphabetUtils(key=self.KEY)
         self.make_internals(self)
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -36,11 +37,11 @@ class AlphabetTexter(tk.Frame):
         self.title.grid(row=0, column=0, sticky="news", ipady=5, ipadx=5)
 
         self.graph = alphabet_graph.AlphabetGraph(
-            parent_frame, figsize=(4.5, 3), dpi=100, interval=150
+            parent_frame, dpi=100, key=self.KEY, interval=150,
         )
         self.graph.grid(row=1, column=0, sticky="news")
 
-        self.display = alphabet_display.AlphabetDisplay(parent_frame)
+        self.display = alphabet_display.AlphabetDisplay(parent_frame, key=self.KEY)
         self.display.grid(row=2, column=0, sticky="ns", ipadx=5, ipady=5)
 
         self.input_var = tk.StringVar()
@@ -85,7 +86,7 @@ class AlphabetTexter(tk.Frame):
             font=(self.MASTER_FONT, 8),
             bg="blue",
         )
-        self.about_me.grid(row=5, column=0, sticky="nws", ipady=5)
+        self.about_me.grid(row=5, column=0, sticky="nes", ipady=5)
 
     def on_keystroke(self, *args):
         inp = self.input_var.get()

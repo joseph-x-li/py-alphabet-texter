@@ -2,13 +2,13 @@ import tkinter as tk
 
 
 class AlphabetDisplay(tk.Frame):
-    def __init__(self, parent, key, *args, font=("Menlo", 12), **kwargs):
+    def __init__(self, parent, key, *args, font=("Menlo", 14), **kwargs):
         """Initialize an Alphabet Display object.
 
         Args:
             parent (tk.Frame): Parent tkinter frame.
             key (string): Input key.
-            font (tuple, optional): Display font. Defaults to ("Menlo", 12).
+            font (tuple, optional): Display font. Defaults to ("Menlo", 14).
         """
         tk.Frame.__init__(self, parent, *args, **kwargs)
         self._parent = parent
