@@ -145,7 +145,6 @@ class AlphabetTexter(tk.Frame):
         self.on_reset()
         self._set_displays()
 
-
 def main():
     root = tk.Tk()
     root.title("py-alphabet-texter")

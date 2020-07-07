@@ -18,6 +18,7 @@ class AlphabetDisplay(tk.Frame):
         self._font = font
         self._build_widget()
 
+
     def _build_widget(self):
         self._display = tk.Text(self, width=self._key_len, height=1, font=self._font)
         self._display.grid(row=0, column=0, sticky="")
@@ -27,6 +28,7 @@ class AlphabetDisplay(tk.Frame):
         self._display.configure(state="disabled")
         self.reset()
         self._make_tags()
+
 
     def _make_tags(self):
         self._display.tag_configure("red", foreground="black", background="red")
@@ -72,6 +74,7 @@ class AlphabetDisplay(tk.Frame):
         """Reset all colors to black.
         """
         self.set_colors(None, 0)
+
 
 
 def main():
