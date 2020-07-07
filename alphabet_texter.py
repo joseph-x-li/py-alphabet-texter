@@ -115,7 +115,7 @@ class AlphabetTexter(tk.Frame):
             self.text_entry.config(state="disabled")
             self._set_displays()
         return
-    
+
     def _set_displays(self):
         recent_time, best_time = self.au.get_scores()
         self.previous_time_label.config(text=f"Recent Time: {recent_time}")
