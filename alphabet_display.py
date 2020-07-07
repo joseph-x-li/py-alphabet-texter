@@ -17,7 +17,6 @@ class AlphabetDisplay(tk.Frame):
         self._key_len = len(key)
         self._font = font
         self._build_widget()
-        self._make_tags()
 
     def _build_widget(self):
         self._display = tk.Text(self, width=self._key_len, height=1, font=self._font)
@@ -27,6 +26,7 @@ class AlphabetDisplay(tk.Frame):
         self._display.insert("end", self._key)
         self._display.configure(state="disabled")
         self.reset()
+        self._make_tags()
 
     def _make_tags(self):
         self._display.tag_configure("red", foreground="black", background="red")
@@ -41,6 +41,7 @@ class AlphabetDisplay(tk.Frame):
         """
         self._key = new_key
         self._key_len = len(new_key)
+        self._display.destroy()
         self._build_widget()
 
     def set_colors(self, correct, max_len):

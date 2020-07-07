@@ -100,7 +100,7 @@ class AlphabetUtils:
         y = "-" if self.best_time is None else f"{self.best_time:.3f}"
         return (x, y)
 
-    def reset_secores(self):
+    def reset_scores(self):
         """Reset best and recent times.
         """
         self.recent_time = None

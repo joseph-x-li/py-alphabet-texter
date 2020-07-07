@@ -80,6 +80,7 @@ class AlphabetGraph(tk.Frame):
         self.times = times
 
     def set_key(self, new_key):
+        self._canvas.destroy()
         self._make_internals(
             self._parent, self._dpi, new_key, self._ylim, self._interval
         )
