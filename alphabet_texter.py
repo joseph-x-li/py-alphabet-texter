@@ -1,8 +1,22 @@
 import tkinter as tk
-import alphabet_graph, alphabet_utils, alphabet_display
+
+import alphabet_display
+import alphabet_graph
+import alphabet_utils
+
+import random  # for string shuffling
 
 
 class AlphabetTexter(tk.Frame):
+    MASTER_FONT = "Menlo"
+    KEY_DICT = {
+        "(A-Z)": "abcdefghijklmnopqrstuvwxyz",
+        "(Z-A)": "zyxwvutsrqponmlkjihgfedcba",
+        "(A-Z), With Spaces": "a b c d e f g h i j k l m n o p q r s t u v w x y z",
+        "Random": None,
+    }
+    KEY_OPTIONS = ["(A-Z)", "(Z-A)", "(A-Z), With Spaces", "Random"]
+
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(
             self,
@@ -15,8 +29,7 @@ class AlphabetTexter(tk.Frame):
         )
         self._parent = parent
 
-        self.MASTER_FONT = "Menlo"
-        self.au = alphabet_utils.AlphabetUtils()
+        self.au = alphabet_utils.AlphabetUtils(key=self.KEY_DICT["(A-Z)"])
         self.make_internals(self)
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -32,11 +45,13 @@ class AlphabetTexter(tk.Frame):
         self.title.grid(row=0, column=0, sticky="news", ipady=5, ipadx=5)
 
         self.graph = alphabet_graph.AlphabetGraph(
-            parent_frame, figsize=(4.5, 3), dpi=100, interval=150
+            parent_frame, dpi=100, key=self.KEY_DICT["(A-Z)"], interval=150,
         )
         self.graph.grid(row=1, column=0, sticky="news")
 
-        self.display = alphabet_display.AlphabetDisplay(parent_frame)
+        self.display = alphabet_display.AlphabetDisplay(
+            parent_frame, key=self.KEY_DICT["(A-Z)"]
+        )
         self.display.grid(row=2, column=0, sticky="ns", ipadx=5, ipady=5)
 
         self.input_var = tk.StringVar()
@@ -63,8 +78,15 @@ class AlphabetTexter(tk.Frame):
         )
         self.best_time_label.grid(row=0, column=1, sticky="nws")
 
-        self.live_graph_box = tk.Checkbutton(self.util_frame)
-        self.live_graph_box.grid(row=0, column=2, sticky="nes")
+        self.key_selection = tk.StringVar()
+        self.key_selection.set(self.KEY_OPTIONS[0])
+        self.key_menu = tk.OptionMenu(
+            self.util_frame,
+            self.key_selection,
+            *self.KEY_OPTIONS,
+            command=self.on_set_key,
+        )
+        self.key_menu.grid(row=0, column=2, sticky="ns")
 
         self.reset_button = tk.Button(
             self.util_frame,
@@ -81,7 +103,7 @@ class AlphabetTexter(tk.Frame):
             font=(self.MASTER_FONT, 8),
             bg="blue",
         )
-        self.about_me.grid(row=5, column=0, sticky="nws", ipady=5)
+        self.about_me.grid(row=5, column=0, sticky="nes", ipady=5)
 
     def on_keystroke(self, *args):
         inp = self.input_var.get()
@@ -91,10 +113,13 @@ class AlphabetTexter(tk.Frame):
         self.graph.set_times(time_array)
         if correct:
             self.text_entry.config(state="disabled")
-            recent_time, best_time = self.au.get_scores()
-            self.previous_time_label.config(text=f"Recent Time: {recent_time}")
-            self.best_time_label.config(text=f"Best Time: {best_time}")
+            self._set_displays()
         return
+
+    def _set_displays(self):
+        recent_time, best_time = self.au.get_scores()
+        self.previous_time_label.config(text=f"Recent Time: {recent_time}")
+        self.best_time_label.config(text=f"Best Time: {best_time}")
 
     def on_reset(self):
         self.au.reset()
@@ -103,6 +128,22 @@ class AlphabetTexter(tk.Frame):
         self.display.reset()
         self.graph.reset()
 
+    def on_set_key(self, event):
+        new_key = self.KEY_DICT[self.key_selection.get()]
+        if new_key is None:
+            new_key = list(self.KEY_DICT["(A-Z)"])
+            random.shuffle(new_key)
+            new_key = "".join(new_key)
+        self.graph.destroy()
+        self.graph = alphabet_graph.AlphabetGraph(
+            self, dpi=100, key=new_key, interval=150,
+        )
+        self.graph.grid(row=1, column=0, sticky="news")
+        self.au.set_key(new_key)
+        self.au.reset_scores()
+        self.display.set_key(new_key)
+        self.on_reset()
+        self._set_displays()
 
 def main():
     root = tk.Tk()

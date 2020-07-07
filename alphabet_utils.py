@@ -2,56 +2,65 @@ import time
 
 
 class AlphabetUtils:
-    def __init__(self, KEY="abcdefghijklmnopqrstuvwxyz"):
-        self.KEY = KEY
-        self.KEYLEN = len(self.KEY)
-        self.prev = ""
-        self.now = ""
+    def __init__(self, key):
+        """Initialize an AlphabetUtils object.
+
+        Args:
+            key (string): Reference string
+        """
+        self.key = key
+        self.keylen = len(self.key)
+        self._prev = ""
+        self._now = ""
         self.best_time = None
         self.recent_time = None
-        self.times = [-1 for _ in range(self.KEYLEN)]
+        self.times = [-1 for _ in range(self.keylen)]
 
     def __repr__(self):
-        base = f"Previous String: {self.prev}\n"
-        base += f"Current String: {self.now}\n"
-        base += f"KEY: {self.KEY}\n"
-        base += f"Best Time: {self.best_time}\n"
-        base += f"Most Recent Time: {self.recent_time}\n"
-        return base
+        return f"AlphabetUtils({self.key})"
 
     def _calculate_times(self):
-        for i in range(self.KEYLEN):
-            if i >= len(self.now):
+        for i in range(self.keylen):
+            if i >= len(self._now):
                 self.times[i] = -1
-            elif i >= len(self.prev):
-                if self.now[i] == self.KEY[i]:
+            elif i >= len(self._prev):
+                if self._now[i] == self.key[i]:
                     self.times[i] = time.time()
                 else:
                     self.times[i] = -1
-            elif self.now[i] != self.prev[i]:
-                if self.now[i] == self.KEY[i]:
+            elif self._now[i] != self._prev[i]:
+                if self._now[i] == self.key[i]:
                     self.times[i] = time.time()
                 else:
                     self.times[i] = -1
-        return
 
     def _get_correct_chars(self):
-        base = [False for _ in range(self.KEYLEN)]
-        for i in range(min(len(self.now), self.KEYLEN)):
-            if self.now[i] == self.KEY[i]:
-                base[i] = True
-        return base
+        ret_val = [False for _ in range(self.keylen)]
+        for i in range(min(len(self._now), self.keylen)):
+            if self._now[i] == self.key[i]:
+                ret_val[i] = True
+        return ret_val
 
     def _get_time_diffs(self):
         return [
-            (y - x) for (x, y) in zip(self.times[: (self.KEYLEN - 1)], self.times[1:])
+            (y - x) for (x, y) in zip(self.times[: (self.keylen - 1)], self.times[1:])
         ]
 
     def tell(self, current_input):
-        self.prev = self.now
-        self.now = current_input
+        """Test the user's current input against the key.
+
+        Args:
+            current_input (string): The user's input.
+
+        Returns:
+            (bool, List[bool], List[float]): Boolean of whether current_input == key,
+                list of correct characters,
+                list of time differentials
+        """
+        self._prev = self._now
+        self._now = current_input
         self._calculate_times()
-        correct = current_input == self.KEY
+        correct = current_input == self.key
         time_diffs = self._get_time_diffs()
         if correct:
             self.recent_time = sum(time_diffs)
@@ -63,22 +72,36 @@ class AlphabetUtils:
 
         return (correct, self._get_correct_chars(), time_diffs)
 
-    def set_KEY(self, new_key):
-        self.KEY = new_key
-        self.KEYLEN = len(self.KEY)
-        return
+    def set_key(self, new_key):
+        """Set a new key and reset all times.
+
+        Args:
+            new_key (string): The new key.
+        """
+        self.key = new_key
+        self.keylen = len(self.key)
+        self.reset()
 
     def reset(self):
-        self.prev = ""
-        self.now = ""
-        self.times = [-1 for _ in range(self.KEYLEN)]
-        return
+        """Reset all data fields, excluding best, recent, and key.
+        """
+        self._prev = ""
+        self._now = ""
+        self.times = [-1 for _ in range(self.keylen)]
 
     def get_scores(self):
+        """Get recent and best scores.
+
+        Returns:
+            (string, string): First string is recent time. Second string is best time.
+                Returns "-" if no recent/best time can be found.
+        """
         x = "-" if self.recent_time is None else f"{self.recent_time:.3f}"
         y = "-" if self.best_time is None else f"{self.best_time:.3f}"
         return (x, y)
 
-    def reset_secores(self):
+    def reset_scores(self):
+        """Reset best and recent times.
+        """
         self.recent_time = None
         self.best_time = None
