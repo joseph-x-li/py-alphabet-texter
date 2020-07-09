@@ -13,9 +13,10 @@ class AlphabetTexter(tk.Frame):
         "(A-Z)": "abcdefghijklmnopqrstuvwxyz",
         "(Z-A)": "zyxwvutsrqponmlkjihgfedcba",
         "(A-Z), With Spaces": "a b c d e f g h i j k l m n o p q r s t u v w x y z",
+        "(Z-A), With Spaces": "z y x w v u t s r q p o n m l k j i h g f e d c b a",
         "Random": None,
     }
-    KEY_OPTIONS = ["(A-Z)", "(Z-A)", "(A-Z), With Spaces", "Random"]
+    KEY_OPTIONS = ["(A-Z)", "(Z-A)", "(A-Z), With Spaces", "(Z-A), With Spaces", "Random"]
 
     def __init__(self, parent, *args, **kwargs):
         tk.Frame.__init__(
@@ -144,6 +145,7 @@ class AlphabetTexter(tk.Frame):
         self.display.set_key(new_key)
         self.on_reset()
         self._set_displays()
+
 
 def main():
     root = tk.Tk()
