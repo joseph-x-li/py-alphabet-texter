@@ -51,11 +51,11 @@ class AlphabetDisplay(tk.Frame):
             correct (List): List of correct characters.
             max_len (int): Length of current user input.
         """
-        # removes all tags
+        # remove all tags
         for color in ["red", "green", "black"]:
             self._display.tag_remove(color, "1.0", f"1.{self._key_len}")
 
-        # reapplies tags
+        # reapply tags
         for x in range(self._key_len):
             start = f"1.{x}"
             end = f"1.{x + 1}"

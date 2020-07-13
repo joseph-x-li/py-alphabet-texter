@@ -5,9 +5,9 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 
 class AlphabetGraph(tk.Frame):
-    FRAME_HEIGHT = 3  # inches
-    X_SCALE = 4
-    BAR_COLOR = "blue"
+    frame_height = 3  # inches
+    x_scale = 4
+    bar_color = "blue"
 
     def __init__(self, parent, dpi, key, *args, ylim=0.5, interval=100, **kwargs):
         """Initializes AlphabetGraph object.
@@ -33,7 +33,7 @@ class AlphabetGraph(tk.Frame):
         self.times = [0.0 for _ in range(self.key_len - 1)]
         self._x = (list(key))[1:]
         self._figure, self._ax = plt.subplots(
-            figsize=(self.key_len / self.X_SCALE, self.FRAME_HEIGHT), dpi=dpi
+            figsize=(self.key_len / self.x_scale, self.frame_height), dpi=dpi
         )
         # self._ax is an matplotlib.axes.Axes object
         self._canvas = FigureCanvasTkAgg(self._figure, master=self)
@@ -43,7 +43,7 @@ class AlphabetGraph(tk.Frame):
         xticks = [str(i) for i in range(self.key_len - 1)]
 
         self._barcontainer = self._ax.bar(
-            x=xticks, height=self.times, color=self.BAR_COLOR
+            x=xticks, height=self.times, color=self.bar_color
         )
         # ^ is a tuple containing (patches, errorbar), where patches is a list
         # of rectangle objects (where rectangles are artists)
