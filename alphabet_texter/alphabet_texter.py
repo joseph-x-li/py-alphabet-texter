@@ -44,9 +44,8 @@ class AlphabetTexter(tk.Frame):
     def make_internals(self, parent_frame):
         self.title = tk.Label(
             parent_frame,
-            text="Alphabet Texter: Python Edition",
+            text="Alphabet Texter",
             font=(self.MASTER_FONT, 24),
-            bg="green",
             relief="ridge",
         )
         self.title.grid(row=0, column=0, sticky="news", ipady=5, ipadx=5)
@@ -103,14 +102,6 @@ class AlphabetTexter(tk.Frame):
             bg="yellow",
         )
         self.reset_button.grid(row=0, column=3, sticky="news")
-
-        self.about_me = tk.Label(
-            parent_frame,
-            text="Joseph X Li, 2020",
-            font=(self.MASTER_FONT, 8),
-            bg="blue",
-        )
-        self.about_me.grid(row=5, column=0, sticky="nes", ipady=5)
 
     def on_keystroke(self, *args):
         inp = self.input_var.get()
