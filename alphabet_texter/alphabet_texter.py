@@ -1,8 +1,8 @@
 import tkinter as tk
 
-import alphabet_display
-import alphabet_graph
-import alphabet_utils
+from alphabet_lib import alphabet_display
+from alphabet_lib import alphabet_graph
+from alphabet_lib import alphabet_utils
 
 import random  # for string shuffling
 
