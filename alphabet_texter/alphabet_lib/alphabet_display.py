@@ -1,5 +1,7 @@
 import tkinter as tk
 
+# NOTE: This module has been deemed complete and should not be changed.
+
 
 class AlphabetDisplay(tk.Frame):
     def __init__(self, parent, key, *args, font=("Menlo", 14), **kwargs):
@@ -25,7 +27,6 @@ class AlphabetDisplay(tk.Frame):
         self.grid_rowconfigure(0, weight=1)
         self._display.insert("end", self._key)
         self._display.configure(state="disabled")
-        self.reset()
         self._make_tags()
 
     def _make_tags(self):
@@ -34,7 +35,7 @@ class AlphabetDisplay(tk.Frame):
         self._display.tag_configure("green", foreground="black", background="green")
 
     def set_key(self, new_key):
-        """Set a new key.
+        """Set a new key and rebuild the widget.
 
         Args:
             new_key (string): The new key.
@@ -45,10 +46,10 @@ class AlphabetDisplay(tk.Frame):
         self._build_widget()
 
     def set_colors(self, correct, max_len):
-        """Set colors of text.
+        """Set colors of text according to user input.
 
         Args:
-            correct (List): List of correct characters.
+            correct (List): Boolean list of correct characters.
             max_len (int): Length of current user input.
         """
         # remove all tags
@@ -68,15 +69,24 @@ class AlphabetDisplay(tk.Frame):
 
             self._display.tag_add(color, start, end)
 
-    def reset(self):
+    def reset_colors(self):
         """Reset all colors to black.
         """
         self.set_colors(None, 0)
 
-
 def main():
     root = tk.Tk()
-    AlphabetDisplay(root, key="test_string").pack(side="top", fill="both", expand=True)
+    ald = AlphabetDisplay(root, key="test_string")
+    ald.pack(side="top", fill="both", expand=True)
+    
+    x = True
+    def callback():
+        nonlocal x
+        ald.set_key("asdf" if x else "fdsa")
+        x = not x
+    
+    
+    tk.Button(root, text="testfn", command=callback).pack(side="top", fill="both", expand=True)
     root.mainloop()
 
 

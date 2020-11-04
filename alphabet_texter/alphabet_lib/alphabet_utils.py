@@ -1,5 +1,6 @@
 import time
 
+# NOTE: This module has been deemed complete and should not be changed.
 
 class AlphabetUtils:
     def __init__(self, key):

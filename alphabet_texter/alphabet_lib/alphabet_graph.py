@@ -93,7 +93,7 @@ class AlphabetGraph(tk.Frame):
 
 def main():
     root = tk.Tk()
-    AlphabetGraph(root, dpi=100, key="1123455").pack(
+    AlphabetGraph(root, dpi=100, key="1123 455").pack(
         side="top", fill="both", expand=True
     )
     root.mainloop()
