@@ -1,7 +1,5 @@
 import tkinter as tk
 
-# NOTE: This module has been deemed complete and should not be changed.
-
 
 class AlphabetDisplay(tk.Frame):
     def __init__(self, parent, key, *args, font=("Menlo", 14), **kwargs):
@@ -69,24 +67,26 @@ class AlphabetDisplay(tk.Frame):
 
             self._display.tag_add(color, start, end)
 
-    def reset_colors(self):
-        """Reset all colors to black.
-        """
+    def reset(self):
+        """Reset all colors to black."""
         self.set_colors(None, 0)
+
 
 def main():
     root = tk.Tk()
     ald = AlphabetDisplay(root, key="test_string")
     ald.pack(side="top", fill="both", expand=True)
-    
+
     x = True
+
     def callback():
         nonlocal x
         ald.set_key("asdf" if x else "fdsa")
         x = not x
-    
-    
-    tk.Button(root, text="testfn", command=callback).pack(side="top", fill="both", expand=True)
+
+    tk.Button(root, text="testfn", command=callback).pack(
+        side="top", fill="both", expand=True
+    )
     root.mainloop()
 
 

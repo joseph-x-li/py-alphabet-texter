@@ -2,6 +2,7 @@ import time
 
 # NOTE: This module has been deemed complete and should not be changed.
 
+
 class AlphabetUtils:
     def __init__(self, key):
         """Initialize an AlphabetUtils object.
@@ -24,12 +25,7 @@ class AlphabetUtils:
         for i in range(self.keylen):
             if i >= len(self._now):
                 self.times[i] = -1
-            elif i >= len(self._prev):
-                if self._now[i] == self.key[i]:
-                    self.times[i] = time.time()
-                else:
-                    self.times[i] = -1
-            elif self._now[i] != self._prev[i]:
+            elif i >= len(self._prev) or self._now[i] != self._prev[i]:
                 if self._now[i] == self.key[i]:
                     self.times[i] = time.time()
                 else:
@@ -43,9 +39,7 @@ class AlphabetUtils:
         return ret_val
 
     def _get_time_diffs(self):
-        return [
-            (y - x) for (x, y) in zip(self.times[: (self.keylen - 1)], self.times[1:])
-        ]
+        return [(y - x) for (x, y) in zip(self.times[:-1], self.times[1:])]
 
     def tell(self, current_input):
         """Test the user's current input against the key.
@@ -84,8 +78,7 @@ class AlphabetUtils:
         self.reset()
 
     def reset(self):
-        """Reset all data fields, excluding best, recent, and key.
-        """
+        """Reset all data fields, excluding best, recent, and key."""
         self._prev = ""
         self._now = ""
         self.times = [-1 for _ in range(self.keylen)]
@@ -102,7 +95,6 @@ class AlphabetUtils:
         return (x, y)
 
     def reset_scores(self):
-        """Reset best and recent times.
-        """
+        """Reset best and recent times."""
         self.recent_time = None
         self.best_time = None

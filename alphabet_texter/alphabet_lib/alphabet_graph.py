@@ -17,7 +17,7 @@ class AlphabetGraph(tk.Frame):
             dpi (int): Dots-per-inch of resulting object.
             key (string): Comparison string.
             ylim (float, optional): Y-limit of resulting graph. Defaults to 0.5.
-            interval (int, optional): Update interval, in milliseconds. 
+            interval (int, optional): Update interval, in milliseconds.
                 Values below 100 will default to 100. Defaults to 100.
         """
         tk.Frame.__init__(self, parent, *args, **kwargs)
@@ -74,7 +74,7 @@ class AlphabetGraph(tk.Frame):
         """Sets times on the time graph.
 
         Args:
-            times (List[float]): List of length self.key_len with non-negative times 
+            times (List[float]): List of length self.key_len with non-negative times
             for each interval.
         """
         self.times = times
@@ -86,8 +86,7 @@ class AlphabetGraph(tk.Frame):
         )
 
     def reset(self):
-        """Resets all times to 0.0.
-        """
+        """Resets all times to 0.0."""
         self.times = [0.0 for _ in range(self.key_len - 1)]
 
 
